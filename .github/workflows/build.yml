@@ -11,7 +11,7 @@ jobs:
     name: Test
     strategy:
       matrix:
-        go-version: [1.20.x, 1.21.x, 1.22.x]
+        go-version: [1.21.x, 1.22.x]
         os: [ubuntu-latest, windows-latest, macos-latest]
     runs-on: ${{ matrix.os }}
     steps:
@@ -38,9 +38,10 @@ jobs:
 
       - name: Upload coverage to Codecov
         if: matrix.os == 'ubuntu-latest' && matrix.go-version == '1.21.x'
-        uses: codecov/codecov-action@v3
+        uses: codecov/codecov-action@v4
         with:
           file: ./coverage.out
+          fail_ci_if_error: false
 
   lint:
     name: Lint
@@ -68,9 +69,9 @@ jobs:
         run: go vet ./...
 
       - name: Run staticcheck
-        uses: dominikh/staticcheck-action@v1.3.0
+        uses: dominikh/staticcheck-action@v1.3.1
         with:
-          version: "2023.1.7"
+          version: "latest"
 
   security:
     name: Security
@@ -89,11 +90,11 @@ jobs:
         run: go mod download
 
       - name: Run Gosec Security Scanner
-        uses: securecodewarrior/github-action-gosec@master
+        uses: securecodewarrior/github-action-gosec@v1
         with:
           args: '-fmt sarif -out gosec.sarif ./...'
 
       - name: Upload SARIF file
-        uses: github/codeql-action/upload-sarif@v2
+        uses: github/codeql-action/upload-sarif@v3
         with:
           sarif_file: gosec.sarif
