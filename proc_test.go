@@ -19,6 +19,7 @@ type TestCommand struct {
 }
 
 func NewTestCommand() (*TestCommand, error) {
+	// Use cross-platform compatible sleep command instead of platform-specific commands
 	cmd := exec.Command("sleep", "10")
 
 	if err := cmd.Start(); err != nil {
@@ -33,6 +34,7 @@ func NewTestCommand() (*TestCommand, error) {
 }
 
 func (c *TestCommand) Name() string {
+	// Return the executable name that should be found by the process scanner
 	return "sleep"
 }
 
