@@ -19,7 +19,7 @@ type TestCommand struct {
 }
 
 func NewTestCommand() (*TestCommand, error) {
-	cmd := exec.Command("man", "cat")
+	cmd := exec.Command("sleep", "10")
 
 	if err := cmd.Start(); err != nil {
 		return nil, err
@@ -33,7 +33,7 @@ func NewTestCommand() (*TestCommand, error) {
 }
 
 func (c *TestCommand) Name() string {
-	return "man"
+	return "sleep"
 }
 
 func (c *TestCommand) Kill() {
